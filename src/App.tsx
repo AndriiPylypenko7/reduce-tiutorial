@@ -1,24 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useMemo, useState } from "react";
+import "./styles/App.css";
+import UserCard from "./components/UserCard/UserCard";
+import { UserDto } from "./api/contracts";
 
 function App() {
+  const [users, setUsers] = useState<UserDto[]>([]);
+  const fetchData = () => {
+    fetch("https://randomuser.me/api/?results=50")
+      .then((data) => data.json())
+      .then((data) => setUsers(data.results));
+  };
+
+  const groupList = useMemo(
+    () =>
+      users.reduce((acc: Record<string, UserDto[]>, item: UserDto) => {
+        const date = new Date(item.registered.date).getFullYear();
+        if (!acc[date]) acc[date] = [item];
+        else acc[date].push(item);
+
+        return acc;
+      }, {}),
+    [users]
+  );
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="leftSection">
+        <h1>ARRAY METHOD REDUCE</h1>
+        <h2>Group items by dates</h2>
+        <button onClick={fetchData} className="button">
+          GET COMMENTS
+        </button>
+      </div>
+      <div className="rightSection">
+        {!users.length ? (
+          <h2>No comments yet</h2>
+        ) : (
+          // users.map((user, i) => <UserCard key={i} user={user} />)
+          Object.keys(groupList).map((group) => (
+            <div className={"groupWrapper"} key={group}>
+              <div className={"groupName"}>
+                {`Registered in ${group}`}
+                <div className={"separator"} />
+              </div>
+              {groupList[group].map((user, i) => (
+                <UserCard key={i} user={user} />
+              ))}
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }
