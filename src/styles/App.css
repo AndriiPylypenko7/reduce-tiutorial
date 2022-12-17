@@ -37,31 +37,30 @@
   border-radius: 8px;
   cursor: pointer;
   background-color: #05be8c;
-  color: #f0f8ffff;
+  color: #f0f8ff;
   transition: 0.25s box-shadow ease-in-out;
 }
 
 .button:hover {
-  box-shadow: 0 0 8px #f0f8ffff;
+  box-shadow: 0 0 8px #f0f8ff;
 }
 
 .groupWrapper {
   width: 100%;
-
 }
 
 .groupName {
-  position: relative;
+  margin: 24px 0;
   font-size: 24px;
   font-weight: 500;
-  margin: 24px 0;
   display: flex;
   align-items: center;
 }
 
 .separator {
-  height: 2px;
+  margin-left: 12px;
   flex: 1 1;
-  background-color: #f0f8ffff;
-  margin-left: 8px;
+  height: 1px;
+  background-color: #f0f8ff;
 }
+
